@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { StyledReusableButton } from "../StyledReusableButton";
 
 export const StyledNavbar = styled.nav`
   height: 5%;
-  background-color: var(--optionalColorTwo);
+  background-color: var(--primaryColor);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -15,17 +16,9 @@ export const StyledNavbarImage = styled.img`
   min-width: 100px;
 `;
 
-export const StyledNavbarButton = styled.button`
+export const StyledNavbarButton = styled(StyledReusableButton)`
   width: 10%;
   min-width: 150px;
   max-height: 60px;
   padding: 0.5% 0;
-  font-family: var(--mainFontRoboto);
-  font-size: var(--bigTextFont);
-  background-color: var(--strongColor);
-  color: var(--darkColor);
-  &:hover {
-    color: var(--whiteColor);
-    cursor: pointer;
-  }
 `;
