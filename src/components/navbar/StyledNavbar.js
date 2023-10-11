@@ -16,9 +16,13 @@ export const StyledNavbarImage = styled.img`
   min-width: 100px;
 `;
 
+export const StyledNavbarButtonContainer = styled.div``;
+
 export const StyledNavbarButton = styled(StyledReusableButton)`
-  width: 10%;
-  min-width: 150px;
-  max-height: 60px;
-  padding: 0.5% 0;
+  margin: 5px;
+  height: 50px;
+  @media (max-width: 370px) {
+    font-size: 15px;
+    height: 25px;
+  }
 `;

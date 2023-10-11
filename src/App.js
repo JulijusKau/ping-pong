@@ -1,11 +1,12 @@
 import "./App.css";
-import { RegisterForm } from "./components/registerForm/RegisterForm";
+import { Leaderboard } from "./components/leaderboard/Leaderboard";
 import { Navbar } from "./components/navbar/Navbar";
 
 function App() {
   return (
     <>
       <Navbar />
+      <Leaderboard />
     </>
   );
 }
