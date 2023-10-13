@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { StyledReusableButton } from "../StyledReusableButton";
+import { Link } from "react-router-dom";
 
 export const StyledMainForm = styled.form`
   margin: 10% auto;
@@ -11,6 +12,9 @@ export const StyledMainForm = styled.form`
   align-items: center;
   gap: 10px;
   background-color: var(--primaryColor);
+  @media (max-width: 370px) {
+    width: 80%;
+  }
 `;
 
 export const StyledInput = styled.input`
@@ -19,7 +23,9 @@ export const StyledInput = styled.input`
   font-size: 15px;
 `;
 
-export const StyledRegisterButton = styled(StyledReusableButton)`
+export const StyledLoginRegisterButton = styled(StyledReusableButton)`
   height: 50px;
   width: 50%;
 `;
+
+export const StyledRegisterLink = styled(Link)``;

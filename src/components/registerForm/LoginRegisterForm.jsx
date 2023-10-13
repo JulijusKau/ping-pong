@@ -1,11 +1,17 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   StyledInput,
+  StyledLoginRegisterButton,
   StyledMainForm,
-  StyledRegisterButton,
-} from "./StyledRegisterForm";
+  StyledRegisterLink,
+} from "./StyledLoginRegisterForm";
 
-export const RegisterForm = () => {
+export const LoginRegisterForm = ({
+  buttonName,
+  onButtonClick,
+  isLoginForm,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -33,7 +39,15 @@ export const RegisterForm = () => {
         required
         onChange={handleOnChange}
       />
-      <StyledRegisterButton>REGISTER</StyledRegisterButton>
+      <StyledLoginRegisterButton onClick={onButtonClick}>
+        {buttonName}
+      </StyledLoginRegisterButton>
+      {isLoginForm && (
+        // <StyledRegisterLink>
+        //   No account? Register here.
+        // </StyledRegisterLink>
+        <span>This is a login form</span>
+      )}
     </StyledMainForm>
   );
 };
