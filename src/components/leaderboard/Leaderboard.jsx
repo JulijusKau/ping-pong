@@ -8,7 +8,7 @@ import {
 export const Leaderboard = () => {
   return (
     <StyledLeaderboard>
-      <StyledLeaderboardHeading>WHO ARE THE LEADERS</StyledLeaderboardHeading>
+      <StyledLeaderboardHeading>LEADERBOARD</StyledLeaderboardHeading>
       <StyledOrderedList>
         <StyledListElement>weewoo</StyledListElement>
         <StyledListElement>adsda</StyledListElement>

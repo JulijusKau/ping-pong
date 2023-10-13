@@ -10,9 +10,14 @@ export const StyledLeaderboard = styled.div`
   padding: 40px;
   margin: 2% 0;
   background-color: var(--primaryColor);
-  width: 20%;
-  min-width: 350px;
+  width: 25%;
+  min-width: 250px;
   height: fit-content;
+  @media (max-width: 370px) {
+    width: 100%;
+    padding: 0;
+    font-size: 13px;
+  }
 `;
 
 export const StyledLeaderboardHeading = styled.h1`
