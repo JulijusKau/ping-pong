@@ -6,28 +6,30 @@ import {
 } from "./StyledNavbar";
 
 import placeholderLogo from "../../assets/images/placeholder-logo.png";
+import { useContext } from "react";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-export const Navbar = () => {
+export const Navbar = ({ onHighscoreButtonClick }) => {
+  const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
+  console.log(isSignedIn);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsSignedIn(false);
+  };
+
   return (
     <StyledNavbar>
       <StyledNavbarImage src={placeholderLogo} />
       <StyledNavbarButtonContainer>
-        <StyledNavbarButton
-          onClick={() => {
-            console.log(
-              "This should dynamically change to Login/Logout, depending on your status"
-            );
-          }}
-        >
-          LOGIN
-        </StyledNavbarButton>
-        <StyledNavbarButton
-          onClick={() => {
-            console.log("This should show the highscores");
-          }}
-        >
-          HIGHSCORES
-        </StyledNavbarButton>
+        {isSignedIn && (
+          <StyledNavbarButton onClick={handleLogout}>LOGOUT</StyledNavbarButton>
+        )}
+        {isSignedIn && (
+          <StyledNavbarButton onClick={onHighscoreButtonClick}>
+            HIGHSCORES
+          </StyledNavbarButton>
+        )}
       </StyledNavbarButtonContainer>
     </StyledNavbar>
   );

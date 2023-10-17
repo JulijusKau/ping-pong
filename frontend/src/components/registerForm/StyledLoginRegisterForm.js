@@ -28,4 +28,12 @@ export const StyledLoginRegisterButton = styled(StyledReusableButton)`
   width: 50%;
 `;
 
-export const StyledRegisterLink = styled(Link)``;
+export const StyledRegisterLink = styled(Link)`
+  text-decoration: none;
+  font-family: var(--mainFontRoboto);
+  color: var(--darkColor);
+  text-align: center;
+  &:hover {
+    color: var(--whiteColor);
+  }
+`;
