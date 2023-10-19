@@ -2,8 +2,11 @@ import { useState } from "react";
 import { LoginRegisterForm } from "../components/loginRegisterForm/LoginRegisterForm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { LoadingSpinner } from "../components/loadingSpinner/LoadingSpinner";
 
 export const RegisterPage = () => {
+  const [fetchingData, setFetchingData] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,11 +19,18 @@ export const RegisterPage = () => {
       e.preventDefault();
       alert("No spacebars allowed");
     } else {
+      setFetchingData(true);
       e.preventDefault();
       axios
-        .post("http://localhost:5000/register", formData)
+        .post(`${process.env.REACT_APP_API_AUTH}register`, formData)
         .then((response) => {
-          navigate("/login");
+          if (response.data.code === "ER_DUP_ENTRY") {
+            alert("Username already exists");
+            setFetchingData(false);
+          } else {
+            alert("Account created");
+            navigate("/login");
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -28,16 +38,21 @@ export const RegisterPage = () => {
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
   };
 
-  return (
-    <LoginRegisterForm
-      onChange={handleOnChange}
-      onSubmit={handleOnSubmit}
-      buttonName="Register"
-      isLoginForm={false}
-      minLength={6}
-      maxlength={20}
-    />
-  );
+  if (fetchingData) {
+    return <LoadingSpinner />;
+  } else {
+    return (
+      <LoginRegisterForm
+        onChange={handleOnChange}
+        onSubmit={handleOnSubmit}
+        buttonName="Register"
+        isLoginForm={false}
+        minLength={6}
+        maxlength={20}
+      />
+    );
+  }
 };

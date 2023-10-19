@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthenticationContext } from "../context/AuthenticationContext";
+import { LoadingSpinner } from "../components/loadingSpinner/LoadingSpinner";
 
 export const LoginPage = () => {
   const { setIsSignedIn } = useContext(AuthenticationContext);
@@ -11,7 +12,7 @@ export const LoginPage = () => {
     password: "",
   });
   const [error, setError] = useState(null);
-  // const [fetchingData, setFetchingData] = useState(false);
+  const [fetchingData, setFetchingData] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,10 +24,10 @@ export const LoginPage = () => {
   };
 
   const handleOnSubmit = (e) => {
-    // setFetchingData(true);
+    setFetchingData(true);
     e.preventDefault();
     axios
-      .post("http://localhost:5000/login", formData)
+      .post(`${process.env.REACT_APP_API_AUTH}login`, formData)
       .then((response) => {
         if (response.data.token) {
           setIsSignedIn(true);
@@ -35,7 +36,7 @@ export const LoginPage = () => {
           navigate("/");
         } else {
           setError(response.data.message);
-          // setFetchingData(false);
+          setFetchingData(false);
           console.log(error);
           alert("Incorrect email or password");
         }
@@ -43,15 +44,16 @@ export const LoginPage = () => {
       .catch((err) => console.log(err));
   };
 
-  // if (fetchingData) {
-  //   return <div>Please wait while loading...</div>;
-  // } else {
-  return (
-    <LoginRegisterForm
-      onChange={handleOnChange}
-      onSubmit={handleOnSubmit}
-      buttonName="Login"
-      isLoginForm={true}
-    />
-  );
+  if (fetchingData) {
+    return <LoadingSpinner />;
+  } else {
+    return (
+      <LoginRegisterForm
+        onChange={handleOnChange}
+        onSubmit={handleOnSubmit}
+        buttonName="Login"
+        isLoginForm={true}
+      />
+    );
+  }
 };
