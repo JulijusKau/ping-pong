@@ -9,13 +9,13 @@ import placeholderLogo from "../../assets/images/placeholder-logo.png";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-export const Navbar = ({ onHighscoreButtonClick }) => {
+export const Navbar = ({ onHighscoreButtonClick, setShowHighscore }) => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
-  console.log(isSignedIn);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsSignedIn(false);
+    setShowHighscore(false);
   };
 
   return (

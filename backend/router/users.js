@@ -6,8 +6,9 @@ const { verifyToken } = require("../utils/authenticationUtils");
 const router = express.Router();
 
 router.get("/users", verifyToken, (req, res) => {
-  dbConnection.execute("SELECT * FROM users", (err, result) =>
-    defaultCallback(err, result, res)
+  dbConnection.execute(
+    "SELECT id, username, highscore FROM users ORDER BY highscore DESC LIMIT 10",
+    (err, result) => defaultCallback(err, result, res)
   );
 });
 

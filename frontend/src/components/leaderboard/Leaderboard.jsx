@@ -1,23 +1,45 @@
+import { useEffect, useState } from "react";
 import {
   StyledLeaderboard,
   StyledLeaderboardHeading,
-  StyledListElement,
-  StyledOrderedList,
+  StyledListSpan,
+  StyledSpanDiv,
 } from "./StyledLeaderboard";
+import axios from "axios";
 
 export const Leaderboard = () => {
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_AUTH}users`, {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setLeaderboardData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching leaderboard data: ", error);
+      });
+  }, [token]);
+
+  console.log(leaderboardData);
+
   return (
     <StyledLeaderboard>
       <StyledLeaderboardHeading>LEADERBOARD</StyledLeaderboardHeading>
-      <StyledOrderedList>
-        <StyledListElement>weewoo</StyledListElement>
-        <StyledListElement>adsda</StyledListElement>
-        <StyledListElement>zxcczxczcx</StyledListElement>
-        <StyledListElement>weeczxzcxcxzwoo</StyledListElement>
-        <StyledListElement>czxzcxcxzcxczxzcxzcx</StyledListElement>
-        <StyledListElement>weeczxzxcczxwoo</StyledListElement>
-        <StyledListElement>weewczxcczxoo</StyledListElement>
-      </StyledOrderedList>
+      <StyledSpanDiv>
+        <StyledListSpan>Username</StyledListSpan>
+        <StyledListSpan>Highscore</StyledListSpan>
+      </StyledSpanDiv>
+      {leaderboardData.map((user) => (
+        <StyledSpanDiv key={user.id}>
+          <StyledListSpan>{user.username}</StyledListSpan>
+          <StyledListSpan>{user.highscore}</StyledListSpan>
+        </StyledSpanDiv>
+      ))}
     </StyledLeaderboard>
   );
 };

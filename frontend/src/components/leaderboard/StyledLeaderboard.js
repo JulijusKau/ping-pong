@@ -6,6 +6,7 @@ font-family: var(--mainFontRoboto)
 `;
 
 export const StyledLeaderboard = styled.div`
+  ${textStyles};
   float: right;
   padding: 40px;
   margin: 2% 0;
@@ -16,7 +17,9 @@ export const StyledLeaderboard = styled.div`
   @media (max-width: 370px) {
     width: 100%;
     padding: 0;
-    font-size: 13px;
+    margin: 0;
+    float: none;
+    font-size: 10px;
   }
 `;
 
@@ -24,10 +27,22 @@ export const StyledLeaderboardHeading = styled.h1`
   ${textStyles};
   text-align: center;
 `;
-export const StyledOrderedList = styled.ol``;
 
-export const StyledListElement = styled.li`
-  ${textStyles};
-  padding: 10px 0;
-  font-size: 20px;
+export const StyledSpanDiv = styled.div`
+  padding: 10px;
+  font-size: 25px;
+  display: flex;
+  justify-content: space-between;
+
+  &:nth-child(2) {
+    color: var(--darkColor);
+    font-size: 30px;
+    @media (max-width: 1200px) {
+      font-size: 20px;
+    }
+  }
+  @media (max-width: 1200px) {
+    font-size: 20px;
+  }
 `;
+export const StyledListSpan = styled.span``;
