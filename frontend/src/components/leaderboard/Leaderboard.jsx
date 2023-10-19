@@ -25,8 +25,6 @@ export const Leaderboard = () => {
       });
   }, [token]);
 
-  console.log(leaderboardData);
-
   return (
     <StyledLeaderboard>
       <StyledLeaderboardHeading>LEADERBOARD</StyledLeaderboardHeading>
