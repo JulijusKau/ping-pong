@@ -7,6 +7,9 @@ font-family: var(--mainFontRoboto)
 
 export const StyledLeaderboard = styled.div`
   ${textStyles};
+  position: absolute;
+  z-index: 2;
+  right: 0;
   float: right;
   padding: 40px;
   margin: 2% 0;

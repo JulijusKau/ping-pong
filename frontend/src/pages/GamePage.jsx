@@ -1,7 +1,11 @@
+import GameBoard from "../components/gameBoard/GameBoard";
 import { Leaderboard } from "../components/leaderboard/Leaderboard";
 
 export const GamePage = ({ showHighscore }) => {
-  if (showHighscore) {
-    return <Leaderboard />;
-  }
+  return (
+    <>
+      {showHighscore && <Leaderboard />}
+      <GameBoard />
+    </>
+  );
 };
