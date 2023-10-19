@@ -9,7 +9,31 @@ const mysqlConfigBase = {
 
 const dbConnection = mysql.createConnection({
   ...mysqlConfigBase,
-  database: "ping_pong",
+  database: "",
+});
+
+dbConnection.query("CREATE DATABASE IF NOT EXISTS ping_pong", (err) => {
+  if (err) throw err;
+  console.log("Database ping_pong created");
+
+  dbConnection.query("USE ping_pong", (err) => {
+    if (err) throw err;
+
+    const usersTableQuery = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT NOT NULL AUTO_INCREMENT UNIQUE,
+      username VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      highscore INT,
+      primary key (id),
+      unique key (username)
+    )
+    `;
+    dbConnection.query(usersTableQuery, (err) => {
+      if (err) throw err;
+      console.log("Users table created");
+    });
+  });
 });
 
 module.exports = {
