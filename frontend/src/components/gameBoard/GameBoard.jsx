@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 
 function GameBoard() {
-  const [ballX, setBallX] = useState(150);
-  const [ballY, setBallY] = useState(100);
+  const [ballX, setBallX] = useState(400);
+  const [ballY, setBallY] = useState(200);
   const [ballSpeedX, setBallSpeedX] = useState(5);
   const [ballSpeedY, setBallSpeedY] = useState(5);
   const [paddle1Y, setPaddle1Y] = useState(150);
   const [paddle2Y, setPaddle2Y] = useState(150);
   const [paddle1Speed, setPaddle1Speed] = useState(0);
   const [paddle2Speed, setPaddle2Speed] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(true);
+  const [scorePaddle1, setScorePaddle1] = useState(0);
+  const [scorePaddle2, setScorePaddle2] = useState(0);
 
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+
     const updateGameArea = () => {
       if (gameStarted) {
         updateBallPosition();
@@ -50,6 +53,15 @@ function GameBoard() {
       let newBallX = ballX + ballSpeedX;
       let newBallY = ballY + ballSpeedY;
 
+      console.log(newBallX);
+      if (newBallX > 800) {
+        setScorePaddle1(scorePaddle1 + 1);
+        setGameStarted(false);
+      } else if (newBallX < 0) {
+        setScorePaddle2(scorePaddle2 + 1);
+        setGameStarted(false);
+      }
+
       if (newBallY < 0 || newBallY > canvas.height - 10) {
         setBallSpeedY(-ballSpeedY);
       }
@@ -61,8 +73,8 @@ function GameBoard() {
           newBallY < paddle2Y + 100)
       ) {
         // Increase ball speed after each hit
-        setBallSpeedX((prevSpeedX) => -prevSpeedX * 1.1); // Increase speed by 10%
-        setBallSpeedY((prevSpeedY) => prevSpeedY * 1.1); // Increase speed by 10%
+        setBallSpeedX((prevSpeedX) => -prevSpeedX * 1.2); // Increase speed by 10%
+        setBallSpeedY((prevSpeedY) => prevSpeedY * 1.2); // Increase speed by 10%
       }
 
       if (newBallX < 0 || newBallX > canvas.width) {
@@ -95,9 +107,14 @@ function GameBoard() {
       ctx.fillRect(0, paddle1Y, 10, 100);
       ctx.fillRect(canvas.width - 10, paddle2Y, 10, 100);
       ctx.fillRect(ballX, ballY, 10, 10);
+
+      // Display scores
+      ctx.font = "30px Arial";
+      ctx.fillText(`Player 1: ${scorePaddle1}`, 50, 50);
+      ctx.fillText(`Player 2: ${scorePaddle2}`, canvas.width - 200, 50);
     };
 
-    const intervalId = setInterval(updateGameArea, 1000 / 60);
+    const intervalId = setInterval(updateGameArea, 17);
 
     // Event listeners for paddle movement
     window.addEventListener("keydown", movePaddle);
@@ -118,6 +135,8 @@ function GameBoard() {
     paddle1Speed,
     paddle2Speed,
     gameStarted,
+    scorePaddle1,
+    scorePaddle2,
   ]);
 
   return (
@@ -138,6 +157,13 @@ function GameBoard() {
           background: "var(--primaryColor)",
         }}
       />
+      <button
+        onClick={() => {
+          setGameStarted(true);
+        }}
+      >
+        START THE GAME
+      </button>
     </div>
   );
 }
