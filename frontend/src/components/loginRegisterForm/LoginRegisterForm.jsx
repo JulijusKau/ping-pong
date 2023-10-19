@@ -10,6 +10,8 @@ export const LoginRegisterForm = ({
   isLoginForm,
   onChange,
   onSubmit,
+  minLength,
+  maxlength,
 }) => {
   return (
     <StyledMainForm onSubmit={onSubmit}>
@@ -19,6 +21,7 @@ export const LoginRegisterForm = ({
         placeholder="Username"
         required
         onChange={onChange}
+        maxlength={maxlength}
       />
       <StyledInput
         name="password"
@@ -26,6 +29,8 @@ export const LoginRegisterForm = ({
         placeholder="*********"
         required
         onChange={onChange}
+        minLength={minLength}
+        maxlength={maxlength}
       />
       <StyledLoginRegisterButton>{buttonName}</StyledLoginRegisterButton>
       {isLoginForm ? (

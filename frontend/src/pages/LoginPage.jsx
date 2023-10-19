@@ -1,4 +1,4 @@
-import { LoginRegisterForm } from "../components/registerForm/LoginRegisterForm";
+import { LoginRegisterForm } from "../components/loginRegisterForm/LoginRegisterForm";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

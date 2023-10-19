@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginRegisterForm } from "../components/registerForm/LoginRegisterForm";
+import { LoginRegisterForm } from "../components/loginRegisterForm/LoginRegisterForm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -12,14 +12,18 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
 
   const handleOnSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:5000/register", formData)
-      .then((response) => {
-        navigate("/login");
-        console.log(response);
-      })
-      .catch((err) => console.log(err));
+    if (formData.username.includes(" ") || formData.password.includes(" ")) {
+      e.preventDefault();
+      alert("No spacebars allowed");
+    } else {
+      e.preventDefault();
+      axios
+        .post("http://localhost:5000/register", formData)
+        .then((response) => {
+          navigate("/login");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const handleOnChange = (e) => {
@@ -32,6 +36,8 @@ export const RegisterPage = () => {
       onSubmit={handleOnSubmit}
       buttonName="Register"
       isLoginForm={false}
+      minLength={6}
+      maxlength={20}
     />
   );
 };
