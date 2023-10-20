@@ -15,11 +15,6 @@ function App() {
     setShowHighscore(!showHighscore);
   };
 
-  console.log(localStorage.length === 1);
-
-  // MAKE IT SO THAT I CHECK THE AUTHORISATION
-  // https://stackoverflow.com/questions/52936624/react-router-authenticated-route-is-redirecting-when-i-refresh-the-page
-
   return (
     <>
       <Navbar

@@ -19,3 +19,11 @@ export const StyledStartButton = styled(StyledReusableButton)`
   padding: 20px;
   position: absolute;
 `;
+
+export const StyledScoreSpan = styled.span`
+  color: var(--whiteColor);
+  font-family: var(--mainFontRoboto);
+  font-size: 30px;
+  position: absolute;
+  margin-top: 200px;
+`;

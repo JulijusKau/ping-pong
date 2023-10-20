@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   StyledGameCanvas,
   StyledGameDiv,
+  StyledScoreSpan,
   StyledStartButton,
 } from "./StyledGameBoard";
 
@@ -19,6 +20,7 @@ export const GameBoard = () => {
   const [playerLives, setPlayerLives] = useState(3);
   const [initialGameStart, setInitialGameStart] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [showFinalScore, setShowFinalScore] = useState(false);
 
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
@@ -26,7 +28,8 @@ export const GameBoard = () => {
 
     const aiLogic = () => {
       const paddle2CenterY = paddle2Y + 50;
-      let aiSpeed = 3 + scorePaddle1 * 0.1;
+      let aiSpeed = 5 + scorePaddle1 * 0.1;
+      console.log(aiSpeed);
 
       if (ballY > paddle2CenterY && ballX > canvas.width / 2) {
         setPaddle2Speed(aiSpeed);
@@ -38,9 +41,9 @@ export const GameBoard = () => {
     };
 
     const resetGame = () => {
-      setScorePaddle1(0);
       setGameStarted(false);
       setInitialGameStart(false);
+      setShowFinalScore(true);
     };
 
     const updateGameArea = () => {
@@ -91,23 +94,17 @@ export const GameBoard = () => {
       if (newBallX > canvas.width) {
         setScorePaddle1(scorePaddle1 + 1);
         setGameStarted(false);
-        if (initialGameStart === true || playerLives === 0) {
-          startCountdown();
-          setTimeout(() => {
-            setGameStarted(true);
-            console.log(gameStarted);
-          }, 3000);
-        }
+        startCountdown();
+        setTimeout(() => {
+          setGameStarted(true);
+        }, 3000);
       } else if (newBallX < 0) {
         setPlayerLives(playerLives - 1);
         setGameStarted(false);
-        if (initialGameStart === true || playerLives === 0) {
-          startCountdown();
-          setTimeout(() => {
-            setGameStarted(true);
-            console.log(gameStarted);
-          }, 3000);
-        }
+        startCountdown();
+        setTimeout(() => {
+          setGameStarted(true);
+        }, 3000);
       }
 
       if (newBallY < 0 || newBallY > canvas.height - 10) {
@@ -156,12 +153,12 @@ export const GameBoard = () => {
       ctx.fillRect(ballX, ballY, 10, 10);
 
       ctx.font = "30px Arial";
-      ctx.fillText(`Player 1: ${scorePaddle1}`, 50, 50);
+      ctx.fillText(`Score: ${scorePaddle1}`, 50, 50);
       ctx.fillText(`Lives: ${playerLives}`, canvas.width - 200, 50);
-      if (countdown > 0) {
+      if (countdown > 0 && initialGameStart === true) {
         ctx.fillText(
-          `${playerLives} lives remaining. Resuming in ${countdown}...`,
-          canvas.width / 5,
+          `Resuming in ${countdown}...`,
+          canvas.width / 3,
           canvas.height / 3
         );
       }
@@ -192,7 +189,6 @@ export const GameBoard = () => {
     initialGameStart,
     countdown,
   ]);
-  console.log(initialGameStart);
   return (
     <StyledGameDiv
       style={{
@@ -208,13 +204,19 @@ export const GameBoard = () => {
       {!initialGameStart && (
         <StyledStartButton
           onClick={() => {
-            setInitialGameStart(true);
+            setScorePaddle1(0);
+
             setPlayerLives(3);
             setGameStarted(true);
+            setShowFinalScore(false);
+            setInitialGameStart(true);
           }}
         >
           START THE GAME
         </StyledStartButton>
+      )}
+      {showFinalScore && (
+        <StyledScoreSpan>Your final score is: {scorePaddle1}</StyledScoreSpan>
       )}
     </StyledGameDiv>
   );
