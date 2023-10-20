@@ -26,3 +26,10 @@ export const StyledNavbarButton = styled(StyledReusableButton)`
     height: 25px;
   }
 `;
+
+export const StyledNavbarSpan = styled.span`
+  font-family: var(--mainFontRoboto);
+  font-size: 25px;
+  padding-right: 50px;
+  color: var(--whiteColor);
+`;

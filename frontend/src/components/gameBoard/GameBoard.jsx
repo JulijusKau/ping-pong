@@ -19,7 +19,6 @@ export const GameBoard = () => {
   const [scorePaddle1, setScorePaddle1] = useState(0);
   const [playerLives, setPlayerLives] = useState(3);
   const [initialGameStart, setInitialGameStart] = useState(false);
-  const [countdown, setCountdown] = useState(0);
   const [showFinalScore, setShowFinalScore] = useState(false);
 
   useEffect(() => {
@@ -75,36 +74,21 @@ export const GameBoard = () => {
       }
     };
 
-    const startCountdown = () => {
-      let count = 3; // Set the initial countdown value
-
-      const countdownTimer = setInterval(() => {
-        if (count > 0) {
-          setCountdown(count - 1); // Update the countdown state
-          count--;
-        } else {
-          clearInterval(countdownTimer); // Stop the countdown when it reaches 0
-        }
-      }, 1000); // Run the countdown every 1000 milliseconds (1 second)
-    };
-
     const updateBallPosition = () => {
       let newBallX = ballX + ballSpeedX;
       let newBallY = ballY + ballSpeedY;
       if (newBallX > canvas.width) {
         setScorePaddle1(scorePaddle1 + 1);
         setGameStarted(false);
-        startCountdown();
         setTimeout(() => {
           setGameStarted(true);
-        }, 3000);
+        }, 1000);
       } else if (newBallX < 0) {
         setPlayerLives(playerLives - 1);
         setGameStarted(false);
-        startCountdown();
         setTimeout(() => {
           setGameStarted(true);
-        }, 3000);
+        }, 1000);
       }
 
       if (newBallY < 0 || newBallY > canvas.height - 10) {
@@ -155,13 +139,6 @@ export const GameBoard = () => {
       ctx.font = "30px Arial";
       ctx.fillText(`Score: ${scorePaddle1}`, 50, 50);
       ctx.fillText(`Lives: ${playerLives}`, canvas.width - 200, 50);
-      if (countdown > 0 && initialGameStart === true) {
-        ctx.fillText(
-          `Resuming in ${countdown}...`,
-          canvas.width / 3,
-          canvas.height / 3
-        );
-      }
     };
 
     const intervalId = setInterval(updateGameArea, 17);
@@ -187,7 +164,6 @@ export const GameBoard = () => {
     scorePaddle1,
     playerLives,
     initialGameStart,
-    countdown,
   ]);
   return (
     <StyledGameDiv

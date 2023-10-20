@@ -3,6 +3,7 @@ import {
   StyledNavbarButton,
   StyledNavbarButtonContainer,
   StyledNavbarImage,
+  StyledNavbarSpan,
 } from "./StyledNavbar";
 
 import placeholderLogo from "../../assets/images/placeholder-logo.png";
@@ -11,6 +12,7 @@ import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 export const Navbar = ({ onHighscoreButtonClick, setShowHighscore }) => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
+  console.log(AuthenticationContext);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -21,16 +23,17 @@ export const Navbar = ({ onHighscoreButtonClick, setShowHighscore }) => {
   return (
     <StyledNavbar>
       <StyledNavbarImage src={placeholderLogo} />
-      <StyledNavbarButtonContainer>
-        {isSignedIn && (
+      {isSignedIn && (
+        <StyledNavbarButtonContainer>
+          <StyledNavbarSpan>Hello, someone</StyledNavbarSpan>
+
           <StyledNavbarButton onClick={handleLogout}>LOGOUT</StyledNavbarButton>
-        )}
-        {isSignedIn && (
+
           <StyledNavbarButton onClick={onHighscoreButtonClick}>
             HIGHSCORES
           </StyledNavbarButton>
-        )}
-      </StyledNavbarButtonContainer>
+        </StyledNavbarButtonContainer>
+      )}
     </StyledNavbar>
   );
 };
