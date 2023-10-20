@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import { LoadingSpinner } from "../components/loadingSpinner/LoadingSpinner";
 
-const Protected = () => {
+const Protected = ({ setUsername }) => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
   const [fetchingData, setFetchingData] = useState(true); // Start with fetchingData as true
   const navigate = useNavigate();
@@ -21,8 +21,9 @@ const Protected = () => {
       })
       .then((response) => {
         if (response.data.id) {
+          console.log(response);
           setIsSignedIn(true);
-          console.log(location.pathname);
+          setUsername(response.data.username);
           navigate("/");
         }
       })
@@ -33,7 +34,7 @@ const Protected = () => {
       .finally(() => {
         setFetchingData(false); // Set fetchingData to false after the request is complete
       });
-  }, [location.pathname, navigate, setIsSignedIn]);
+  }, [location.pathname, navigate, setIsSignedIn, setUsername]);
 
   if (fetchingData) {
     return <LoadingSpinner />; // Show a loading spinner while fetching data

@@ -10,6 +10,7 @@ import { useState } from "react";
 
 function App() {
   const [showHighscore, setShowHighscore] = useState(false);
+  const [username, setUsername] = useState("");
 
   const handleHighscoreButtonClick = () => {
     setShowHighscore(!showHighscore);
@@ -20,9 +21,10 @@ function App() {
       <Navbar
         setShowHighscore={setShowHighscore}
         onHighscoreButtonClick={handleHighscoreButtonClick}
+        username={username}
       />
       <Routes>
-        <Route element={<Protected />}>
+        <Route element={<Protected setUsername={setUsername} />}>
           <Route
             path="/"
             element={<GamePage showHighscore={showHighscore} />}

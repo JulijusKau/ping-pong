@@ -10,7 +10,11 @@ import placeholderLogo from "../../assets/images/placeholder-logo.png";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-export const Navbar = ({ onHighscoreButtonClick, setShowHighscore }) => {
+export const Navbar = ({
+  onHighscoreButtonClick,
+  setShowHighscore,
+  username,
+}) => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
   console.log(AuthenticationContext);
 
@@ -25,7 +29,7 @@ export const Navbar = ({ onHighscoreButtonClick, setShowHighscore }) => {
       <StyledNavbarImage src={placeholderLogo} />
       {isSignedIn && (
         <StyledNavbarButtonContainer>
-          <StyledNavbarSpan>Hello, someone</StyledNavbarSpan>
+          <StyledNavbarSpan>Hello, {username}</StyledNavbarSpan>
 
           <StyledNavbarButton onClick={handleLogout}>LOGOUT</StyledNavbarButton>
 
