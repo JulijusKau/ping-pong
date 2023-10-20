@@ -15,6 +15,11 @@ function App() {
     setShowHighscore(!showHighscore);
   };
 
+  console.log(localStorage.length === 1);
+
+  // MAKE IT SO THAT I CHECK THE AUTHORISATION
+  // https://stackoverflow.com/questions/52936624/react-router-authenticated-route-is-redirecting-when-i-refresh-the-page
+
   return (
     <>
       <Navbar
@@ -22,14 +27,15 @@ function App() {
         onHighscoreButtonClick={handleHighscoreButtonClick}
       />
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
         <Route element={<Protected />}>
           <Route
             path="/"
             element={<GamePage showHighscore={showHighscore} />}
           />
         </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

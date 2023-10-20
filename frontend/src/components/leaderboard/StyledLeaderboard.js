@@ -7,21 +7,19 @@ font-family: var(--mainFontRoboto)
 
 export const StyledLeaderboard = styled.div`
   ${textStyles};
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  float: right;
+  position: relative;
+  float: left;
   padding: 40px;
   margin: 2% 0;
   background-color: var(--primaryColor);
-  width: 25%;
+  width: 20%;
   min-width: 250px;
   height: fit-content;
   @media (max-width: 370px) {
     width: 100%;
     padding: 0;
     margin: 0;
-    float: none;
+    float: left;
     font-size: 10px;
   }
 `;
@@ -33,13 +31,13 @@ export const StyledLeaderboardHeading = styled.h1`
 
 export const StyledSpanDiv = styled.div`
   padding: 10px;
-  font-size: 25px;
+  font-size: 20px;
   display: flex;
   justify-content: space-between;
 
   &:nth-child(2) {
     color: var(--darkColor);
-    font-size: 30px;
+    font-size: 25px;
     @media (max-width: 1200px) {
       font-size: 20px;
     }

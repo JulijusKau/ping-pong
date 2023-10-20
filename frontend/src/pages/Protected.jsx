@@ -1,15 +1,18 @@
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../context/AuthenticationContext";
+import { LoadingSpinner } from "../components/loadingSpinner/LoadingSpinner";
 
 const Protected = () => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
+  const [fetchingData, setFetchingData] = useState(true); // Start with fetchingData as true
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     axios
       .get(`${process.env.REACT_APP_API_AUTH}token/verify`, {
         headers: {
@@ -19,16 +22,28 @@ const Protected = () => {
       .then((response) => {
         if (response.data.id) {
           setIsSignedIn(true);
-          navigate(location.pathname);
+          console.log(location.pathname);
+          navigate("/");
         }
+      })
+      .catch((error) => {
+        // Handle authentication errors here
+        console.error(error);
+      })
+      .finally(() => {
+        setFetchingData(false); // Set fetchingData to false after the request is complete
       });
   }, [location.pathname, navigate, setIsSignedIn]);
 
-  if (!isSignedIn) {
-    return <Navigate to="/login" />;
+  if (fetchingData) {
+    return <LoadingSpinner />; // Show a loading spinner while fetching data
+  } else if (!fetchingData) {
+    if (isSignedIn) {
+      return <Outlet />;
+    } else if (!isSignedIn) {
+      return <Navigate to="/login" />;
+    }
   }
-
-  return <Outlet />;
 };
 
 export default Protected;

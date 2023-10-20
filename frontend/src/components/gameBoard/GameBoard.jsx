@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
+import {
+  StyledGameCanvas,
+  StyledGameDiv,
+  StyledStartButton,
+} from "./StyledGameBoard";
 
-function GameBoard() {
+export const GameBoard = () => {
   const [ballX, setBallX] = useState(400);
   const [ballY, setBallY] = useState(200);
   const [ballSpeedX, setBallSpeedX] = useState(5);
@@ -9,17 +14,41 @@ function GameBoard() {
   const [paddle2Y, setPaddle2Y] = useState(150);
   const [paddle1Speed, setPaddle1Speed] = useState(0);
   const [paddle2Speed, setPaddle2Speed] = useState(0);
-  const [gameStarted, setGameStarted] = useState(true);
+  const [gameStarted, setGameStarted] = useState(false);
   const [scorePaddle1, setScorePaddle1] = useState(0);
-  const [scorePaddle2, setScorePaddle2] = useState(0);
+  const [playerLives, setPlayerLives] = useState(3);
+  const [initialGameStart, setInitialGameStart] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
+    const aiLogic = () => {
+      const paddle2CenterY = paddle2Y + 50;
+      let aiSpeed = 3 + scorePaddle1 * 0.1;
+
+      if (ballY > paddle2CenterY && ballX > canvas.width / 2) {
+        setPaddle2Speed(aiSpeed);
+      } else if (ballY < paddle2CenterY && ballX > canvas.width / 2) {
+        setPaddle2Speed(-aiSpeed);
+      } else {
+        setPaddle2Speed(0);
+      }
+    };
+
+    const resetGame = () => {
+      setScorePaddle1(0);
+      setGameStarted(false);
+      setInitialGameStart(false);
+    };
+
     const updateGameArea = () => {
-      if (gameStarted) {
+      if (playerLives === 0) {
+        resetGame();
+      } else if (gameStarted) {
         updateBallPosition();
+        aiLogic();
       }
       updatePaddlePosition();
       updateCanvas();
@@ -28,11 +57,7 @@ function GameBoard() {
     const movePaddle = (e) => {
       const key = e.key;
 
-      if (key === "ArrowUp" && paddle2Y > 0) {
-        setPaddle2Speed(-10);
-      } else if (key === "ArrowDown" && paddle2Y < canvas.height - 100) {
-        setPaddle2Speed(10);
-      } else if (key === "w" && paddle1Y > 0) {
+      if (key === "w" && paddle1Y > 0) {
         setPaddle1Speed(-10);
       } else if (key === "s" && paddle1Y < canvas.height - 100) {
         setPaddle1Speed(10);
@@ -42,24 +67,47 @@ function GameBoard() {
     const stopPaddle = (e) => {
       const key = e.key;
 
-      if (key === "ArrowUp" || key === "ArrowDown") {
-        setPaddle2Speed(0);
-      } else if (key === "w" || key === "s") {
+      if (key === "w" || key === "s") {
         setPaddle1Speed(0);
       }
+    };
+
+    const startCountdown = () => {
+      let count = 3; // Set the initial countdown value
+
+      const countdownTimer = setInterval(() => {
+        if (count > 0) {
+          setCountdown(count - 1); // Update the countdown state
+          count--;
+        } else {
+          clearInterval(countdownTimer); // Stop the countdown when it reaches 0
+        }
+      }, 1000); // Run the countdown every 1000 milliseconds (1 second)
     };
 
     const updateBallPosition = () => {
       let newBallX = ballX + ballSpeedX;
       let newBallY = ballY + ballSpeedY;
-
-      console.log(newBallX);
-      if (newBallX > 800) {
+      if (newBallX > canvas.width) {
         setScorePaddle1(scorePaddle1 + 1);
         setGameStarted(false);
+        if (initialGameStart === true || playerLives === 0) {
+          startCountdown();
+          setTimeout(() => {
+            setGameStarted(true);
+            console.log(gameStarted);
+          }, 3000);
+        }
       } else if (newBallX < 0) {
-        setScorePaddle2(scorePaddle2 + 1);
+        setPlayerLives(playerLives - 1);
         setGameStarted(false);
+        if (initialGameStart === true || playerLives === 0) {
+          startCountdown();
+          setTimeout(() => {
+            setGameStarted(true);
+            console.log(gameStarted);
+          }, 3000);
+        }
       }
 
       if (newBallY < 0 || newBallY > canvas.height - 10) {
@@ -72,15 +120,14 @@ function GameBoard() {
           newBallY > paddle2Y &&
           newBallY < paddle2Y + 100)
       ) {
-        // Increase ball speed after each hit
-        setBallSpeedX((prevSpeedX) => -prevSpeedX * 1.2); // Increase speed by 10%
-        setBallSpeedY((prevSpeedY) => prevSpeedY * 1.2); // Increase speed by 10%
+        setBallSpeedX((prevSpeedX) => -prevSpeedX * 1.2);
+        setBallSpeedY((prevSpeedY) => prevSpeedY * 1.2);
       }
 
       if (newBallX < 0 || newBallX > canvas.width) {
         newBallX = canvas.width / 2;
         newBallY = canvas.height / 2;
-        setBallSpeedX(-5);
+        setBallSpeedX(5);
         setBallSpeedY(5);
       }
 
@@ -108,15 +155,20 @@ function GameBoard() {
       ctx.fillRect(canvas.width - 10, paddle2Y, 10, 100);
       ctx.fillRect(ballX, ballY, 10, 10);
 
-      // Display scores
       ctx.font = "30px Arial";
       ctx.fillText(`Player 1: ${scorePaddle1}`, 50, 50);
-      ctx.fillText(`Player 2: ${scorePaddle2}`, canvas.width - 200, 50);
+      ctx.fillText(`Lives: ${playerLives}`, canvas.width - 200, 50);
+      if (countdown > 0) {
+        ctx.fillText(
+          `${playerLives} lives remaining. Resuming in ${countdown}...`,
+          canvas.width / 5,
+          canvas.height / 3
+        );
+      }
     };
 
     const intervalId = setInterval(updateGameArea, 17);
 
-    // Event listeners for paddle movement
     window.addEventListener("keydown", movePaddle);
     window.addEventListener("keyup", stopPaddle);
 
@@ -136,36 +188,34 @@ function GameBoard() {
     paddle2Speed,
     gameStarted,
     scorePaddle1,
-    scorePaddle2,
+    playerLives,
+    initialGameStart,
+    countdown,
   ]);
-
+  console.log(initialGameStart);
   return (
-    <div
+    <StyledGameDiv
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "500px",
       }}
     >
-      <canvas
-        id="gameCanvas"
-        width={800}
-        height={400}
-        style={{
-          border: "1px solid black",
-          background: "var(--primaryColor)",
-        }}
-      />
-      <button
-        onClick={() => {
-          setGameStarted(true);
-        }}
-      >
-        START THE GAME
-      </button>
-    </div>
-  );
-}
+      <StyledGameCanvas id="gameCanvas" width={800} height={400} />
 
-export default GameBoard;
+      {!initialGameStart && (
+        <StyledStartButton
+          onClick={() => {
+            setInitialGameStart(true);
+            setPlayerLives(3);
+            setGameStarted(true);
+          }}
+        >
+          START THE GAME
+        </StyledStartButton>
+      )}
+    </StyledGameDiv>
+  );
+};
