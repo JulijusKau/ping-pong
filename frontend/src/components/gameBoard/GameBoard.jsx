@@ -1,3 +1,7 @@
+// BALL DETECTION OF PADDLES STILL A BIT WONKY
+// NEED TO FIX
+// !!!!!!!!
+
 import React, { useState, useEffect } from "react";
 import {
   StyledGameCanvas,
