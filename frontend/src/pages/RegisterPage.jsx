@@ -10,6 +10,7 @@ export const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    highscore: 0,
   });
 
   const navigate = useNavigate();

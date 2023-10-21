@@ -10,13 +10,13 @@ const router = express.Router();
 
 router.post("/register", (req, res) => {
   const { body } = req;
-  const { username, password } = body;
+  const { username, password, highscore } = body;
 
   const hashedPassword = bcrypt.hashSync(password, 12);
 
   dbConnection.execute(
-    "INSERT INTO users (username, password) VALUES (?, ?)",
-    [username, hashedPassword],
+    "INSERT INTO users (username, password, highscore) VALUES (?, ?, ?)",
+    [username, hashedPassword, highscore],
     (err, result) => defaultCallback(err, result, res)
   );
 });

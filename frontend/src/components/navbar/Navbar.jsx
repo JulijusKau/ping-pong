@@ -11,12 +11,11 @@ import { useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 export const Navbar = ({
-  onHighscoreButtonClick,
   setShowHighscore,
   username,
+  handleHighscoreButtonClick,
 }) => {
   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
-  console.log(AuthenticationContext);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -33,7 +32,7 @@ export const Navbar = ({
 
           <StyledNavbarButton onClick={handleLogout}>LOGOUT</StyledNavbarButton>
 
-          <StyledNavbarButton onClick={onHighscoreButtonClick}>
+          <StyledNavbarButton onClick={handleHighscoreButtonClick}>
             HIGHSCORES
           </StyledNavbarButton>
         </StyledNavbarButtonContainer>

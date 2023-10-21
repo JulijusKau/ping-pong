@@ -19,4 +19,15 @@ router.get("/users/:id", verifyToken, (req, res) => {
   );
 });
 
+router.put("/users/:id", verifyToken, (req, res) => {
+  const { body } = req;
+  const { id } = req.params;
+
+  dbConnection.execute(
+    "UPDATE users SET highscore=? WHERE id=? AND ? > highscore",
+    [body.highscore, id, body.highscore],
+    (err, result) => defaultCallback(err, result, res)
+  );
+});
+
 module.exports = router;

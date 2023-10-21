@@ -24,7 +24,7 @@ dbConnection.query("CREATE DATABASE IF NOT EXISTS ping_pong", (err) => {
       id INT NOT NULL AUTO_INCREMENT UNIQUE,
       username VARCHAR(255) NOT NULL UNIQUE,
       password VARCHAR(255) NOT NULL,
-      highscore INT,
+      highscore INT NOT NULL,
       primary key (id),
       unique key (username)
     )

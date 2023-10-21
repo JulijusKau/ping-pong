@@ -6,7 +6,7 @@ import {
   StyledStartButton,
 } from "./StyledGameBoard";
 
-export const GameBoard = () => {
+export const GameBoard = ({ setFinalHighScore }) => {
   const [ballX, setBallX] = useState(400);
   const [ballY, setBallY] = useState(200);
   const [ballSpeedX, setBallSpeedX] = useState(5);
@@ -28,7 +28,6 @@ export const GameBoard = () => {
     const aiLogic = () => {
       const paddle2CenterY = paddle2Y + 50;
       let aiSpeed = 5 + scorePaddle1 * 0.1;
-      console.log(aiSpeed);
 
       if (ballY > paddle2CenterY && ballX > canvas.width / 2) {
         setPaddle2Speed(aiSpeed);
@@ -41,6 +40,7 @@ export const GameBoard = () => {
 
     const resetGame = () => {
       setGameStarted(false);
+      setFinalHighScore(scorePaddle1);
       setInitialGameStart(false);
       setShowFinalScore(true);
     };
@@ -164,6 +164,7 @@ export const GameBoard = () => {
     scorePaddle1,
     playerLives,
     initialGameStart,
+    setFinalHighScore,
   ]);
   return (
     <StyledGameDiv
